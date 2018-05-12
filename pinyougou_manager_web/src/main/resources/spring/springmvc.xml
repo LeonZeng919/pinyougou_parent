@@ -23,6 +23,6 @@
     </mvc:annotation-driven>
     <!-- 引用dubbo 服务 -->
     <dubbo:application name="pinyougou-manager-web" />
-    <dubbo:registry address="zookeeper://52.14.66.151:2181" timeout="200000"/>
+    <dubbo:registry address="zookeeper://114.116.50.96:2181" />
     <dubbo:annotation package="com.pinyougou.manager.controller" />
 </beans>

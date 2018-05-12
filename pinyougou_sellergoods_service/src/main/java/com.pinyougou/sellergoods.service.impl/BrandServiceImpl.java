@@ -1,5 +1,4 @@
 package com.pinyougou.sellergoods.service.impl;
-
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.abel533.entity.Example;
 import com.github.pagehelper.PageHelper;
@@ -8,74 +7,127 @@ import com.pinyougou.mapper.TbBrandMapper;
 import com.pinyougou.pojo.TbBrand;
 import com.pinyougou.sellergoods.service.BrandService;
 import entity.PageResult;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
+ * 业务逻辑实现
  * @author Steven
- * @version 1.0
- * @description com.pinyougou.sellergoods.service.impl
- * @date 2018-5-9
+ *
  */
 @Service
-public class BrandServiceImpl implements  BrandService{
-    @Autowired
-    private TbBrandMapper brandMapper;
+public class BrandServiceImpl implements BrandService {
 
-    @Override
-    public List<TbBrand> findAll() {
-        return brandMapper.select(null);
-    }
+	@Autowired
+	private TbBrandMapper brandMapper;
+	
+	/**
+	 * 查询全部
+	 */
+	@Override
+	public List<TbBrand> findAll() {
+		return brandMapper.select(null);
+	}
 
-    @Override
-    public PageResult<TbBrand> findPage(int pageNum, int pageSize ,TbBrand tbBrand) {
-        PageResult<TbBrand> result = new PageResult<>();
+	/**
+	 * 按分页查询
+	 */
+	@Override
+	public PageResult findPage(int pageNum, int pageSize) {
+		
+		PageResult<TbBrand> result = new PageResult<TbBrand>();
         //设置分页条件
-        PageHelper.startPage(pageNum,pageSize);
-        //设置查询条件
-        Example example = new Example(TbBrand.class);
-        Example.Criteria criteria = example.createCriteria();
-        if (tbBrand!=null){
-            if (StringUtils.isNotBlank(tbBrand.getName())) {
-                criteria.andLike("name", "%" + tbBrand.getName() + "%");
-            }
-            if (StringUtils.isNotBlank(tbBrand.getFirstChar())) {
-                criteria.andLike("firstChar", "%" + tbBrand.getFirstChar() + "%");
-            }
-        }
+        PageHelper.startPage(pageNum, pageSize);
+
         //查询数据
-        List<TbBrand> brands = brandMapper.selectByExample(example);
+        List<TbBrand> list = brandMapper.select(null);
         //保存数据列表
-        result.setRows(brands);
-        result.setTotal(new PageInfo<TbBrand>(brands).getTotal());
-        return result;
-    }
+        result.setRows(list);
 
-    @Override
-    public void saveBrand(TbBrand tbBrand) {
-        brandMapper.insertSelective(tbBrand);
-    }
+        //获取总记录数
+        PageInfo<TbBrand> info = new PageInfo<TbBrand>(list);
+        result.setTotal(info.getTotal());
+		return result;
+	}
 
-    @Override
-    public TbBrand findById(Long id) {
-        return brandMapper.selectByPrimaryKey(id);
-    }
+	/**
+	 * 增加
+	 */
+	@Override
+	public void add(TbBrand brand) {
+		brandMapper.insertSelective(brand);		
+	}
 
-    @Override
-    public void updateBrand(TbBrand tbBrand) {
-        brandMapper.updateByPrimaryKeySelective(tbBrand);
-    }
+	
+	/**
+	 * 修改
+	 */
+	@Override
+	public void update(TbBrand brand){
+		brandMapper.updateByPrimaryKeySelective(brand);
+	}	
+	
+	/**
+	 * 根据ID获取实体
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public TbBrand findOne(Long id){
+		return brandMapper.selectByPrimaryKey(id);
+	}
 
-    @Override
-    public void deleteBrand(Long[] ids) {
+	/**
+	 * 批量删除
+	 */
+	@Override
+	public void delete(Long[] ids) {
+		//数组转list
         List longs = Arrays.asList(ids);
+        //构建查询条件
         Example example = new Example(TbBrand.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andIn("id", longs);
-        brandMapper.deleteByExample(example);
-    }
 
+        //跟据查询条件删除数据
+        brandMapper.deleteByExample(example);
+	}
+	
+	
+	@Override
+	public PageResult findPage(TbBrand brand, int pageNum, int pageSize) {
+		PageResult<TbBrand> result = new PageResult<TbBrand>();
+        //设置分页条件
+        PageHelper.startPage(pageNum, pageSize);
+
+        //构建查询条件
+        Example example = new Example(TbBrand.class);
+        Example.Criteria criteria = example.createCriteria();
+		
+		if(brand!=null){			
+						//如果字段不为空
+			if (brand.getName()!=null && brand.getName().length()>0) {
+				criteria.andLike("name", "%" + brand.getName() + "%");
+			}
+			//如果字段不为空
+			if (brand.getFirstChar()!=null && brand.getFirstChar().length()>0) {
+				criteria.andLike("firstChar", "%" + brand.getFirstChar() + "%");
+			}
+	
+		}
+
+        //查询数据
+        List<TbBrand> list = brandMapper.selectByExample(example);
+        //保存数据列表
+        result.setRows(list);
+
+        //获取总记录数
+        PageInfo<TbBrand> info = new PageInfo<TbBrand>(list);
+        result.setTotal(info.getTotal());
+		
+		return result;
+	}
+	
 }

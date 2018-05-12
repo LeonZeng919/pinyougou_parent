@@ -9,8 +9,19 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <dubbo:protocol name="dubbo" port="20881"></dubbo:protocol>
+    <!--1.对于核心的服务中心，去除dubbo超时重试机制，并重新评估设置超时时间。
+
+    (1)、去掉超时重试机制-->
+
+    <!--dubbo:provider delay="-1" timeout="6000"  retries="0"/>
+
+    (2)、重新评估设置超时时间-->
+
+    <!--<dubbo:service interface="*.*" ref="*"  timeout="延长服务时间"/>-->
+    <dubbo:provider delay="-1" timeout="6000" retries="0"/>
     <dubbo:application name="pinyougou-sellergoods-service"/>
-    <dubbo:registry address="zookeeper://52.14.66.151:2181"/>
-    <dubbo:annotation package="com.pinyougou.sellergoods.service.impl"/>
+    <dubbo:registry address="zookeeper://114.116.50.96:2181"/>
+    <dubbo:annotation package="com.pinyougou.sellergoods.service.impl" />
+    <!--<dubbo:service interface="com.pinyougou.sellergoods.service.SpecificationService" ref="specificationServiceImpl"  retries="0" timeout="5000000"/>-->
 
 </beans>

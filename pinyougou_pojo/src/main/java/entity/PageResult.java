@@ -1,7 +1,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+
 
 public class PageResult<T> implements Serializable {
    private long total;//总记录数
