@@ -72,7 +72,6 @@ public class SpecificationServiceImpl implements SpecificationService {
 			option.setSpecId(specification.getSpecification().getId());
 			specificationOptionMapper.insertSelective(option);
 		}
-		System.out.println("爱你哟");
 
 	}
 

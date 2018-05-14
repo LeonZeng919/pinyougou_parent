@@ -20,6 +20,10 @@
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
   
     <script src="../plugins/adminLTE/js/app.min.js"></script>
+    <script src="/plugins/angularjs/angular.min.js"></script>
+    <script src="/js/base.js"></script>
+    <script src="/js/service/loginService.js"></script>
+    <script src="/js/controller/indexController.js"></script>
     
     <script type="text/javascript">   
 		 function SetIFrameHeight(){
@@ -33,7 +37,7 @@
  
 </head>
 
-<body class="hold-transition skin-green sidebar-mini" >
+<body class="hold-transition skin-green sidebar-mini" ng-app="pinyougou" ng-controller="indexController" ng-init="showLoginName()">
 
     <div class="wrapper">
 
@@ -256,7 +260,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="../img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">测试用户</span>
+                                <span class="hidden-xs">{{loginName}}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
@@ -275,7 +279,7 @@
                                         <a href="#" class="btn btn-default btn-flat">修改密码</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">注销</a>
+                                        <a href="/logout" class="btn btn-default btn-flat">注销</a>
                                     </div>
                                 </li>
                             </ul>
@@ -321,12 +325,12 @@
 				        </a>
 				        <ul class="treeview-menu">
 				
-				            <li id="admin-login">
+				            <li>
 				                <a href="seller_1.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>商家审核
 				                </a>
 				            </li>
-							<li id="admin-login">
+							<li >
 				                <a href="seller.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>商家管理
 				                </a>
@@ -343,27 +347,27 @@
 				        </a>
 				        <ul class="treeview-menu">
 				
-				            <li id="admin-login">
+				            <li >
 				                <a href="brand.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>品牌管理
 				                </a>
 				            </li>
-							<li id="admin-login">
+							<li >
 				                <a href="specification.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>规格管理
 				                </a>
 				            </li>							
-							<li id="admin-login">
+							<li >
 				                <a href="type_template.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>模板管理
 				                </a>
 				            </li>
-							<li id="admin-login">
+							<li >
 				                <a href="item_cat.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>分类管理
 				                </a>
 				            </li>
-							<li id="admin-login">
+							<li >
 				                <a href="goods.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>商品审核
 				                </a>
@@ -381,12 +385,12 @@
 				        </a>
 				        <ul class="treeview-menu">
 				
-				            <li id="admin-login">
+				            <li >
 				                <a href="content_category.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>广告类型管理
 				                </a>
 				            </li>
-							<li id="admin-login">
+							<li >
 				                <a href="content.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>广告管理
 				                </a>

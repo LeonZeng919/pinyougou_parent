@@ -125,5 +125,25 @@ public class ItemCatServiceImpl implements ItemCatService {
 		
 		return result;
 	}
-	
+
+	@Override
+	public PageResult findByParentId(int pageNum, int pageSize,Long parentId) {
+		PageResult<TbItemCat> result = new PageResult<TbItemCat>();
+		//设置分页条件
+		PageHelper.startPage(pageNum, pageSize);
+		//构建查询条件
+		TbItemCat where = new TbItemCat();
+		where.setParentId(parentId);
+		//查询数据
+		List<TbItemCat> itemCats = itemCatMapper.select(where);
+		//保存数据列表
+		result.setRows(itemCats);
+
+		//获取总记录数
+		PageInfo<TbItemCat> info = new PageInfo<TbItemCat>(itemCats);
+		result.setTotal(info.getTotal());
+
+		return result;
+	}
+
 }

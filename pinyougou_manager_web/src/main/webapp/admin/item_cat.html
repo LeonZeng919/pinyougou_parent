@@ -13,10 +13,28 @@
     <link rel="stylesheet" href="../css/style.css">
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-    
+
+	<!--引入angularjs依赖-->
+
+	<script src="../plugins/angularjs/angular.min.js"></script>
+	<script type="text/javascript" src="../plugins/angularjs/pagination.js"></script>
+	<link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+	<script type="text/javascript" src="../js/base_pagination.js"></script>
+	<script src="../js/service/itemCatService.js"></script>
+	<script type="text/javascript" src="../js/service/typeTemplateService.js"></script>
+	<script src="../js/controller/baseController.js"></script>
+	<script src="../js/controller/itemCatController.js"></script>
+	<!-- select2 -->
+	<link rel="stylesheet" href="../plugins/select2/select2.css" />
+	<link rel="stylesheet" href="../plugins/select2/select2-bootstrap.css" />
+	<script type="text/javascript" src="../plugins/select2/select2.min.js"></script>
+	<!--注意这个js放的位置必须在base_pagination.js后面，因为里面用到了app-->
+	<script type="text/javascript" src="../plugins/select2/angular-select2.js"></script>
+
+
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" >
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="itemCatController" >
   <!-- .box-body -->
                 
                     <div class="box-header with-border">
@@ -25,17 +43,20 @@
                     </div>
 
                     <div class="box-body">
-                  			 <ol class="breadcrumb">	                        	
-                        		<li>
-		                        	<a href="#" >顶级分类列表</a> 
-		                        </li>
-		                        <li>
-		                       		<a href="#" >珠宝</a>
-		                        </li>
-		                        <li>
-		                        	<a href="#" >银饰</a>
-		                        </li>
-	                        </ol>
+						<ol class="breadcrumb">
+							<li>
+								<a ng-click="grand=1;selectList({id:0});">顶级分类列表</a>
+							</li>
+
+							<li ng-hide="grand<2">
+								<a ng-click="grand=2;selectList(entity_1);">{{entity_1.name}}</a>
+							</li>
+
+							<li ng-hide="grand<3">
+								<a ng-click="grand=3;selectList(entity_2);">{{entity_2.name}}</a>
+							</li>
+
+						</ol>
 
                         <!-- 数据表格 -->
                         <div class="table-box">
@@ -44,7 +65,7 @@
                             <div class="pull-left">
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal" ><i class="fa fa-file-o"></i> 新建</button>
+                                        <button type="button" class="btn btn-default" title="新建" ng-click="findTemplates()" data-toggle="modal" data-target="#editModal" ><i class="fa fa-file-o"></i> 新建</button>
                                         <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"></i> 删除</button>
                                         <button type="button" class="btn btn-default" title="刷新" ><i class="fa fa-check"></i> 刷新</button>
                                        
@@ -58,7 +79,7 @@
 			                      <thead>
 			                          <tr>
 			                              <th class="" style="padding-right:0px">
-			                                  <input type="checkbox" class="icheckbox_square-blue">
+			                                  <input type="checkbox" class="icheckbox_square-blue" >
 			                              </th> 
 										  <th class="sorting_asc">分类ID</th>
 									      <th class="sorting">分类名称</th>									   
@@ -68,45 +89,24 @@
 			                          </tr>
 			                      </thead>
 			                      <tbody>
-			                          <tr >
-			                              <td><input  type="checkbox" ></td>			                              
-				                          <td>982</td>
-									      <td>吊坠/项链</td>									    
-									      <td>
-									      	11    
-									      </td>									      
-		                                  <td class="text-center">		                                     
-		                                      <button type="button" class="btn bg-olive btn-xs" >查询下级</button> 		                                     
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" >修改</button>                                           
+			                          <tr ng-repeat="entity in list">
+			                              <td><input  type="checkbox" ng-click="updateSelection($event,entity.id)"></td>
+				                          <td>{{entity.id}}</td>
+									      <td>{{entity.name}}</td>
+									      <td>{{entity.typeId}}</td>
+		                                  <td class="text-center">
+											  <span ng-if="grand!=3">
+		                                      <button type="button" class="btn bg-olive btn-xs" ng-click="setGrand(grand+1);selectList(entity)" >查询下级</button>
+											  </span>
+		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" ng-click="findOne(entity.id);findTemplates()">修改</button>
 		                                  </td>
 			                          </tr>
-									  <tr >
-			                              <td><input  type="checkbox"> </td>			                              
-				                          <td>983</td>
-									      <td>手镯/手链/脚链</td>									    
-									      <td>
-									      	11    
-									      </td>									      
-		                                  <td class="text-center">		                                     
-		                                      <button type="button" class="btn bg-olive btn-xs" >查询下级</button> 		                                     
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" >修改</button>                                           
-		                                  </td>
-			                          </tr>
-									  <tr >
-			                              <td><input  type="checkbox" ></td>			                              
-				                          <td>984</td>
-									      <td>戒指/耳饰</td>									    
-									      <td>
-									      	11    
-									      </td>									      
-		                                  <td class="text-center">		                                     
-		                                      <button type="button" class="btn bg-olive btn-xs" >查询下级</button> 		                                     
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" >修改</button>                                           
-		                                  </td>
-			                          </tr>
+
 			                      </tbody>
 			                  </table>
-			                  <!--数据列表/-->                      
+			                  <!--数据列表/-->
+							<!--分页-->
+							<tm-pagination conf="itemPaginationConf"></tm-pagination>
 						
                         </div>
                         <!-- 数据表格 /-->
@@ -132,24 +132,27 @@
 				<tr>
 		      		<td>上级商品分类</td>
 		      		<td>
-		      		   珠宝 >>  银饰
+						顶级分类<div ng-hide="grand<2">>>{{entity_1.name}}</div>
+						<div ng-hide="grand<3">>>{{entity_2.name}}</div>
 		      		</td>
 		      	</tr>
 		      	<tr>
 		      		<td>商品分类名称</td>
-		      		<td><input  class="form-control" placeholder="商品分类名称">  </td>
+		      		<td><input  class="form-control" ng-model="entity.name" placeholder="商品分类名称">  </td>
 		      	</tr>			  
 		      	<tr>
 		      		<td>类型模板</td>
 		      		<td>	      		
-		      			<input select2 config="options['type_template']" placeholder="商品类型模板" class="form-control" type="text"/>
+						<select select2 ng-model="entity.typeId" class="form-control" placeholder="商品类型模板" class="form-control">
+							<option value="{{ item.id }}" ng-repeat="item in temps">{{ item.name }}</option>
+						</select>
 		      		</td>		      		      		
 		      	</tr>		      	
 			 </table>				
 			
 		</div>
 		<div class="modal-footer">						
-			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="save()">保存</button>
 			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>
 	  </div>

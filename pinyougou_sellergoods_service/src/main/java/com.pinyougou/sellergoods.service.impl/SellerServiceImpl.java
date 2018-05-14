@@ -1,5 +1,6 @@
 package com.pinyougou.sellergoods.service.impl;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
@@ -57,6 +58,9 @@ public class SellerServiceImpl implements SellerService {
 	 */
 	@Override
 	public void add(TbSeller seller) {
+		//设置为待审状态
+		seller.setStatus("0");
+		seller.setCreateTime(new Date());
 		sellerMapper.insertSelective(seller);		
 	}
 
@@ -75,7 +79,7 @@ public class SellerServiceImpl implements SellerService {
 	 * @return
 	 */
 	@Override
-	public TbSeller findOne(Long id){
+	public TbSeller findOne(String id){
 		return sellerMapper.selectByPrimaryKey(id);
 	}
 
@@ -83,13 +87,13 @@ public class SellerServiceImpl implements SellerService {
 	 * 批量删除
 	 */
 	@Override
-	public void delete(Long[] ids) {
+	public void delete(String[] ids) {
 		//数组转list
-        List longs = Arrays.asList(ids);
+        List strs = Arrays.asList(ids);
         //构建查询条件
         Example example = new Example(TbSeller.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andIn("id", longs);
+        criteria.andIn("sellerId", strs);
 
         //跟据查询条件删除数据
         sellerMapper.deleteByExample(example);
