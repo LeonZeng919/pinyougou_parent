@@ -60,10 +60,18 @@ public interface ItemCatService {
 
 
 	/**
-	 * 根据parentId查找商品分类列表
+	 * 根据parentId查找商品分类列表并分页
 	 * @param parentId
 	 * @return
 	 */
 	public PageResult findByParentId(int page, int rows,Long parentId);
-	
+
+	/**
+	 * 根据parentId查找商品分类列表不分页
+	 * @param parentId
+	 * @return
+	 */
+	public List<TbItemCat> findByParentId(Long parentId);
 }
+
+

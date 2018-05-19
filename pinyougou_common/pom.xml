@@ -14,5 +14,17 @@
     <name>pinyougou_common</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
+    <dependencies>
+        <!-- 文件上传组件 -->
+        <dependency>
+            <groupId>org.csource.fastdfs</groupId>
+            <artifactId>fastdfs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>

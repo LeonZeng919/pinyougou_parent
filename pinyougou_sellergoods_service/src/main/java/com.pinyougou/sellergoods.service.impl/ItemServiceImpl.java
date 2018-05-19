@@ -1,6 +1,8 @@
 package com.pinyougou.sellergoods.service.impl;
 import java.util.Arrays;
 import java.util.List;
+
+import com.pinyougou.mapper.TbItemCatMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.abel533.entity.Example;
@@ -22,6 +24,7 @@ public class ItemServiceImpl implements ItemService {
 
 	@Autowired
 	private TbItemMapper itemMapper;
+
 	
 	/**
 	 * 查询全部
@@ -93,6 +96,7 @@ public class ItemServiceImpl implements ItemService {
 
         //跟据查询条件删除数据
         itemMapper.deleteByExample(example);
+
 	}
 	
 	
@@ -164,6 +168,7 @@ public class ItemServiceImpl implements ItemService {
 
         //查询数据
         List<TbItem> list = itemMapper.selectByExample(example);
+
         //保存数据列表
         result.setRows(list);
 

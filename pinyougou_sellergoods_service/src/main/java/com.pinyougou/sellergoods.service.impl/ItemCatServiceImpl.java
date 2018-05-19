@@ -146,4 +146,14 @@ public class ItemCatServiceImpl implements ItemCatService {
 		return result;
 	}
 
+	@Override
+	public List<TbItemCat> findByParentId(Long parentId) {
+		//构建查询条件
+		TbItemCat where = new TbItemCat();
+		where.setParentId(parentId);
+		//查询数据
+		List<TbItemCat> itemCats = itemCatMapper.select(where);
+		return  itemCats;
+	}
+
 }
